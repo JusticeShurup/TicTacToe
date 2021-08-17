@@ -1,32 +1,17 @@
 #ifndef _PLAYER_H_
-#define _PLAYER_H
+#define _PLAYER_H_
 #include <SFML/Graphics.hpp>
-
-using namespace sf;
-
+#include <Poco/Net/StreamSocket.h>
 
 class Player
 {
 public:
 	Player(int number);
 	int getNumber();
+	void setConnection(std::string address);
+	Poco::Net::StreamSocket getSock();
 private:
 	int number;
-};
-
-struct GameShape {
-	GameShape(float sX, float eX, float sY, float eY);
-	void setPlayerShape(Player* player);
-	void drawPlayerShape(RenderWindow* window);
-
-	float startX;
-	float endX;
-	float startY;
-	float endY;
-	bool enabled = false;
-	int player_number;
-	RectangleShape* rectangle1; 
-	RectangleShape* rectangle2;
-	CircleShape* circle;
+	Poco::Net::StreamSocket client;
 };
 #endif
