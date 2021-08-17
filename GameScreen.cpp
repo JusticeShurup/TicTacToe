@@ -101,7 +101,6 @@ void GameScreen::setClick(float X, float Y, Player* player) {
 
 void GameScreen::undoClick() {
     for (auto i : claimed_shapes) {
-        std::cout << i << std::endl;
         if (gameShape_number == i) {
             return;
         }
@@ -147,7 +146,6 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                     while (!claimTurn) {
                         while (window->pollEvent(event)) {
                             if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-                                std::cout << "Nigger" << std::endl;
                                 render(window);
                                 if (claimTurnButton->getGlobalBounds().contains(Vector2f(Mouse::getPosition(*window)))) {
                                     claimTurn = true;
