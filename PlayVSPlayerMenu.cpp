@@ -3,6 +3,9 @@
 #include "MenuScreen.h"
 #include "CreateRoomMenu.h"
 #include "FindRoomMenu.h"
+#include "Game.h"
+#include <Poco/Net/StreamSocket.h>
+
 
 using namespace sf;
 
@@ -24,8 +27,12 @@ void PlayVSPlayerMenu::handleEvent(Event& event, RenderWindow* window) {
 	createRoomButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	findRoomButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	backButton->update(Vector2f(Mouse::getPosition(*window)), event);
+
 	if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
         if (createRoomButton->isClicked()) {
+			uint8_t message = 1;
+			menuScreen->getGame()->getPlayer()->setConnection("127.0.0.1:1337");
+			menuScreen->getGame()->getPlayer()->getSock()->sendBytes(&message, sizeof(uint8_t));
 			menuScreen->state = new CreateRoomMenu(menuScreen);
         }
 		else if (findRoomButton->isClicked()) {
