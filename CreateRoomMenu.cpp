@@ -3,6 +3,7 @@
 #include "MenuScreen.h"
 #include "Game.h"
 #include <Poco/Net/StreamSocket.h>
+#include "LobbyMenu.h"
 #include <iostream>
 
 using namespace sf;
@@ -34,15 +35,16 @@ void CreateRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 	if (event.type == event.MouseButtonReleased || event.mouseButton.button == Mouse::Left) {
 		if (okButton->isClicked()) {
 			std::string game_name;
-			uint32_t size;
 			game_name = textField->getText();
-			size = game_name.size();
-			std::cout << size;
-			menuScreen->getGame()->getPlayer1()->setConnection("127.0.0.1:1337");
-			menuScreen->getGame()->getPlayer1()->getSock().sendBytes(&size, sizeof(uint32_t));
-			menuScreen->getGame()->getPlayer1()->getSock().sendBytes(game_name.c_str(), game_name.size());
+			uint8_t size = game_name.size();
+			char* buffer = new char[size+1];
+			buffer[0] = size;
+			strcpy(buffer + 1, game_name.c_str());
+			menuScreen->getGame()->getPlayer()->getSock()->sendBytes(buffer, size+1);
+			menuScreen->state = new LobbyMenu(menuScreen);
 		}
 		else if (backButton->isClicked()) {
+			menuScreen->getGame()->getPlayer()->getSock()->close();
 			menuScreen->state = new PlayVSPlayerMenu(menuScreen);
 		}
 	}

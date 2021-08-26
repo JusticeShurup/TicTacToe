@@ -32,8 +32,7 @@ void FindRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 	textField->handleInput(event);
 	if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
 		if (okButton->isClicked()) {
-			menuScreen->getGame()->getPlayer2()->setConnection("127.0.0.1:1337");
-
+			menuScreen->getGame()->getPlayer()->setConnection("127.0.0.1:1337");
 		}
 		else if (backButton->isClicked()) {
 			menuScreen->state = new PlayVSPlayerMenu(menuScreen);
