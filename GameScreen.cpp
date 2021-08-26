@@ -28,6 +28,7 @@ GameScreen::GameScreen(Game* game) {
             count += 1;
         }
     }
+    gameShape_number = 0;
     turn = true;
     vsAI = game->vsAI;
 }
@@ -119,10 +120,10 @@ void GameScreen::simulateAI(int AI_number) {
         if (!gameShapes[choice].enabled) {
             gameShapes[choice].enabled = true;
             if (AI_number == 1) {
-                gameShapes[choice].setPlayerShape(game->player);
+                gameShapes[choice].setPlayerShape(new Player(1));
             }
             else {
-                gameShapes[choice].setPlayerShape(game->player);
+                gameShapes[choice].setPlayerShape(new Player(2));
             }
             if (turn) turn = false;
             else turn = true;
@@ -142,7 +143,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
             render(window);
             game->clock.restart();
             if (player_number == 1) {
-                while (!turn) {
+                while (turn) {
                     while (!claimTurn) {
                         while (window->pollEvent(event)) {
                             if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
@@ -167,35 +168,6 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                     }
                     claimTurn = false;
                 }
-                player_number = 2;
-            }
-            else {
-                while (turn) {
-                    while (!claimTurn) {
-                        while (window->pollEvent(event)) {
-                            if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-                                render(window);
-                                if (claimTurnButton->getGlobalBounds().contains(Vector2f(Mouse::getPosition(*window)))) {
-                                    claimTurn = true;
-                                    claimed_shapes.push_back(gameShape_number);
-                                    turn = false;
-                                }
-                                else {
-                                    undoClick();
-                                    update(game->player, event);
-                                }
-                                if (checkWin(player_number)) {
-                                    std::cout << "Win player 2" << std::endl;
-                                    is_running = false;
-                                }
-                                render(window);
-                            }
-                            render(window);
-                        }
-                    }
-                    claimTurn = false;
-                }
-                player_number = 1;
             }
         }
         game->screen = new ResultScreen(game);
@@ -220,6 +192,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                             }
                             else {
                                 undoClick();
+                                std::cout << "fuck" << std::endl;
                                 update(game->player, event);
                             }
                         }
