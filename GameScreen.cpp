@@ -119,10 +119,10 @@ void GameScreen::simulateAI(int AI_number) {
         if (!gameShapes[choice].enabled) {
             gameShapes[choice].enabled = true;
             if (AI_number == 1) {
-                gameShapes[choice].setPlayerShape(game->player);
+                gameShapes[choice].setPlayerShape(game->player1);
             }
             else {
-                gameShapes[choice].setPlayerShape(game->player);
+                gameShapes[choice].setPlayerShape(game->player2);
             }
             if (turn) turn = false;
             else turn = true;
@@ -154,7 +154,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                                 }
                                 else {
                                     undoClick();
-                                    update(game->player, event);
+                                    update(game->player1, event);
                                 }
                                 if (checkWin(player_number)) {
                                     std::cout << "Win player 1" << std::endl;
@@ -182,7 +182,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                                 }
                                 else {
                                     undoClick();
-                                    update(game->player, event);
+                                    update(game->player2, event);
                                 }
                                 if (checkWin(player_number)) {
                                     std::cout << "Win player 2" << std::endl;
@@ -220,7 +220,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                             }
                             else {
                                 undoClick();
-                                update(game->player, event);
+                                update(game->player1, event);
                             }
                         }
                         else if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
@@ -230,7 +230,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
                             }
                             else {
                                 undoClick();
-                                update(game->player, event);
+                                update(game->player2, event);
                             }
                         }
 

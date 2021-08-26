@@ -8,10 +8,10 @@ Game::Game(bool vsAI) : vsAI(vsAI) {
     ContextSettings settings;
     settings.antialiasingLevel = 10;
     gameWindow = new RenderWindow(VideoMode(550, 450), "TicTacToe", Style::Default, settings);
-    player = new Player(1);
+    player1 = new Player(1);
+    player2 = new Player(2);
     is_running = true;
     turn = true;
-    screen = new MenuScreen(this);
 }
 
 void Game::setMode(bool vsAI) {
@@ -22,12 +22,16 @@ void Game::stopGame() {
     is_running = false;
 }
 
-Player* Game::getPlayer() {
-    return player;
+Player* Game::getPlayer1() {
+    return player1;
 }
 
+Player* Game::getPlayer2() {
+    return player2;
+}
 
 void Game::run() {
+    screen = new MenuScreen(this);
     while (is_running) {
         Event event;
         while (gameWindow->pollEvent(event)) {
