@@ -12,7 +12,7 @@ public:
 	std::string getNickame() const;
 	int getNumber();
 	void setConnection(std::string address);
-	Poco::Net::StreamSocket* getSock();
+	Poco::Net::StreamSocket& getSock();
 private:
 	int number;
 	Poco::Net::StreamSocket client;

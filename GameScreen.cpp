@@ -6,7 +6,7 @@
 using namespace sf;
 
 GameScreen::GameScreen(Game* game) {
-    set_game(game);
+    setGame(game);
     claimTurnImage = new Image;
     claimTurnImage->loadFromFile("images/claimButton.png");
     claimTurnTexture = new Texture;

@@ -20,7 +20,6 @@ public:
 
     MenuState* state;
 private:
-
 };
 
 #endif

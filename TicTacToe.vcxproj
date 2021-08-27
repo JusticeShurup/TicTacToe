@@ -122,7 +122,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameShape.cpp" />
-    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="LobbyMenu.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -133,6 +132,7 @@
     <ClCompile Include="PlayVSPlayerMenu.cpp" />
     <ClCompile Include="ResultScreen.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="Server.cpp" />
     <ClCompile Include="TextField.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +142,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameShape.h" />
-    <ClInclude Include="GameState.h" />
     <ClInclude Include="LobbyMenu.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuScreen.h" />
@@ -152,6 +151,7 @@
     <ClInclude Include="PlayVSPlayerMenu.h" />
     <ClInclude Include="ResultScreen.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="Server.h" />
     <ClInclude Include="TextField.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

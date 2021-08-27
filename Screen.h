@@ -2,6 +2,7 @@
 #define _SCREEN_H_
 #include <SFML/Graphics.hpp>
 #include "Button.h"
+#include "Server.h"
 
 class Game;
 
@@ -10,12 +11,16 @@ class Screen
 protected:
 	
 	Game* game;
+	Server* server;
 
 public:
 	
-	void set_game(Game* game);
+	void setGame(Game* game);
+	void setServer(Server* server);
+
 	Game* getGame();
-	
+	Server* getServer();
+
 	virtual ~Screen() {};
 
 	virtual void handleEvent(sf::Event& event, sf::RenderWindow* window) = 0;

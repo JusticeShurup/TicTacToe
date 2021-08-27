@@ -5,7 +5,7 @@
 using namespace sf;
 
 ResultScreen::ResultScreen(Game* game) {
-	set_game(game);
+	setGame(game);
 	okButton = new Button(50, 50, 250, 250, "Ok");
 }
 

@@ -26,11 +26,13 @@ LobbyMenu::LobbyMenu(MenuScreen* menuScreen) {
 
 	player1_nickname = new Text();
 	player1_nickname->setFont(font);
-	player1_nickname->setString("Fucker");
+	player1_nickname->setString("Player");
 	player1_nickname->setFillColor(Color::White);
 	player1_nickname->setStyle(Text::Bold);
 	player1_nickname->setCharacterSize(30);
 	player1_nickname->setPosition(5, 100);
+
+	menuScreen->getServer()->run();
 
 	player2_nickname = nullptr;
 }
@@ -41,13 +43,14 @@ LobbyMenu::~LobbyMenu() {
 	delete game_name;
 	delete player1_nickname;
 	delete player2_nickname;
+	menuScreen->getServer()->close();
 }
 
 std::string LobbyMenu::receiveGameName() {
 	uint8_t size;
-	menuScreen->getGame()->getPlayer()->getSock()->receiveBytes(&size, sizeof(uint8_t));
+	menuScreen->getGame()->getPlayer()->getSock().receiveBytes(&size, sizeof(uint8_t));
 	std::string game_name(size, ' ');
-	menuScreen->getGame()->getPlayer()->getSock()->receiveBytes(&(game_name[0]), size);
+	menuScreen->getGame()->getPlayer()->getSock().receiveBytes(&(game_name[0]), size);
 	return game_name;
 }
 
@@ -65,7 +68,6 @@ void LobbyMenu::handleEvent(Event& event, RenderWindow* window) {
 	readyButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	exitButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	if (!player2_nickname) {
-		menuScreen->getGame()->getPlayer()->getSock()->receiveBytes(buffer, 20);
 		std::cout << "nig" << std::endl;
 		std::string name(buffer, buffer[0]);
 		initPlayer2(name);
@@ -75,7 +77,7 @@ void LobbyMenu::handleEvent(Event& event, RenderWindow* window) {
 
 		}
 		else if (exitButton->isClicked()) {
-			menuScreen->getGame()->getPlayer()->getSock()->close();
+			menuScreen->getGame()->getPlayer()->getSock().close();
 			menuScreen->state = new PlayVSPlayerMenu(menuScreen);
 		}
 	}

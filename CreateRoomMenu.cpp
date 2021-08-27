@@ -40,12 +40,13 @@ void CreateRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 			char* buffer = new char[size+1];
 			buffer[0] = size;
 			strcpy(buffer + 1, game_name.c_str());
-			menuScreen->getGame()->getPlayer()->getSock()->sendBytes(buffer, size+1);
-			menuScreen->state = new LobbyMenu(menuScreen);
+			menuScreen->getGame()->getPlayer()->getSock().sendBytes(buffer, size+1);
+			menuScreen->state->setNewState(new LobbyMenu(menuScreen));
+			delete[] buffer;
 		}
 		else if (backButton->isClicked()) {
-			menuScreen->getGame()->getPlayer()->getSock()->close();
-			menuScreen->state = new PlayVSPlayerMenu(menuScreen);
+			menuScreen->getGame()->getPlayer()->getSock().close();
+			menuScreen->state->setNewState(new PlayVSPlayerMenu(menuScreen));
 		}
 	}
 }

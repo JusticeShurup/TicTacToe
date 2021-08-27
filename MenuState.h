@@ -12,10 +12,12 @@ protected:
 
 	MenuScreen* menuScreen;
 
+
 public: 
 	virtual ~MenuState() {};
 	
 	void setMenuScreen(MenuScreen* menuScreen);
+	void setNewState(MenuState* menuState);
 
 	virtual void handleEvent(sf::Event& event, sf::RenderWindow* window) = 0;
 	virtual void render(sf::RenderWindow* window) = 0;

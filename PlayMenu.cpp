@@ -31,10 +31,10 @@ void PlayMenu::handleEvent(Event& event, RenderWindow* window) {
         }
         else if (playVSPlayerButton->isClicked()) {
             menuScreen->getGame()->setMode(0);
-            menuScreen->state = new PlayVSPlayerMenu(menuScreen);
+            menuScreen->state->setNewState(new PlayVSPlayerMenu(menuScreen));
         }
         else if (backButton->isClicked()) {
-            menuScreen->state = new MainMenu(menuScreen);
+            menuScreen->state->setNewState(new MainMenu(menuScreen));
         }
     }
 }

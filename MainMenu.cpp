@@ -21,7 +21,7 @@ void MainMenu::handleEvent(Event& event, RenderWindow* window) {
 	exitButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
 		if (playButton->isClicked()) {
-			menuScreen->state = new PlayMenu(menuScreen);
+			menuScreen->state->setNewState(new PlayMenu(menuScreen));
 		}
 		else if (exitButton->isClicked()) {
 			window->close();

@@ -23,7 +23,7 @@ void Player::setConnection(std::string address) {
 	client.connect(address_server);
 }
 
-Poco::Net::StreamSocket* Player::getSock() {
-	return &client;
+Poco::Net::StreamSocket& Player::getSock(){
+	return client;
 }
 
