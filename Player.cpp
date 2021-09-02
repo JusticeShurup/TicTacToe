@@ -1,6 +1,9 @@
 #include "Player.h"
 #include "Poco/Net/SocketAddress.h"
-Player::Player(int number) : number(number) {}
+Player::Player(int number) : 
+	number(number), 
+	nickname("Player")
+{}
 
 Player::~Player() {
 	client.close();

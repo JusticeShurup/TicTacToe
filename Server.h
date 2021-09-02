@@ -12,13 +12,18 @@ public:
 	
 	void NetEvent();
 
+	std::string getSecondPlayerNickname() const;
+
+	bool isNicknameRecieved();
+
 	void run();
 
 	void close();
 private:
 	Poco::Net::StreamSocket client;
-	char* buffer[20];
+	Poco::RunnableAdapter<Server> adapter;
 	Poco::Thread thread;
+	uint8_t size;
 	std::string player_name;
 	std::atomic<bool> flag;
 };

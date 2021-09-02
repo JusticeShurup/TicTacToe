@@ -5,6 +5,7 @@
 class CreateRoomMenu :
     public MenuState
 {
+    static const int MAX_NAME_LENGHT = 128;
 public: 
     CreateRoomMenu(MenuScreen* menuScreen);
     ~CreateRoomMenu();
@@ -12,6 +13,8 @@ public:
     virtual void render(sf::RenderWindow* window) override;
 
 private: 
+
+    char name_buffer[MAX_NAME_LENGHT];
     TextField* textField;
 
     Button* okButton;

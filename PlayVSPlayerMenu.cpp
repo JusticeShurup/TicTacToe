@@ -32,14 +32,19 @@ void PlayVSPlayerMenu::handleEvent(Event& event, RenderWindow* window) {
         if (createRoomButton->isClicked()) {
 			uint8_t message = 1;
 			menuScreen->getGame()->getPlayer()->setConnection("127.0.0.1:1337");
+			menuScreen->setServer(new Server(menuScreen->getGame()->getPlayer()->getSock()));
 			menuScreen->getGame()->getPlayer()->getSock().sendBytes(&message, sizeof(uint8_t));
-			menuScreen->state = new CreateRoomMenu(menuScreen);
+			menuScreen->state->setNewState(new CreateRoomMenu(menuScreen));
         }
 		else if (findRoomButton->isClicked()) {
-			menuScreen->state = new FindRoomMenu(menuScreen);
+			uint8_t message = 2;
+			menuScreen->getGame()->getPlayer()->setConnection("127.0.0.1:1337");
+			menuScreen->setServer(new Server(menuScreen->getGame()->getPlayer()->getSock()));
+			menuScreen->getGame()->getPlayer()->getSock().sendBytes(&message, sizeof(uint8_t));
+			menuScreen->state->setNewState(new FindRoomMenu(menuScreen));
 		}
         else if (backButton->isClicked()) {
-			menuScreen->state = new PlayMenu(menuScreen);
+			menuScreen->state->setNewState(new PlayMenu(menuScreen));
         }
 	}
 }

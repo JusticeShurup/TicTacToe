@@ -5,6 +5,7 @@
 class FindRoomMenu :
     public MenuState
 {
+    static const int MAX_NAME_LENGHT = 128;
 public: 
     FindRoomMenu(MenuScreen* menuScreen);
     ~FindRoomMenu();
@@ -13,7 +14,7 @@ public:
     virtual void render(sf::RenderWindow* window) override;
 
 private:
-    
+    char name_buffer[MAX_NAME_LENGHT];
     TextField* textField;
     Button* okButton;
     std::string text;

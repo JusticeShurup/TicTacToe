@@ -8,7 +8,7 @@
 
 using namespace sf;
 
-CreateRoomMenu::CreateRoomMenu(MenuScreen* menuScreen) {
+CreateRoomMenu::CreateRoomMenu(MenuScreen* menuScreen) : name_buffer{0} {
 	setMenuScreen(menuScreen);
 	textField = new TextField(40);
 	textField->setPosition(0, 20);
@@ -25,24 +25,22 @@ CreateRoomMenu::~CreateRoomMenu() {
 void CreateRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 	okButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	backButton->update(Vector2f(Mouse::getPosition(*window)), event);
-	if (textField->contains(Vector2f(Mouse::getPosition(*window)))) {
-		textField->setActive(true);
-	}
-	else {
-		textField->setActive(false);
-	}
 	textField->handleInput(event);
 	if (event.type == event.MouseButtonReleased || event.mouseButton.button == Mouse::Left) {
+		if (textField->contains(Vector2f(Mouse::getPosition(*window)))) {
+			textField->setActive(true);
+		}
+		else {
+			textField->setActive(false);
+		}
 		if (okButton->isClicked()) {
 			std::string game_name;
 			game_name = textField->getText();
 			uint8_t size = game_name.size();
-			char* buffer = new char[size+1];
-			buffer[0] = size;
-			strcpy(buffer + 1, game_name.c_str());
-			menuScreen->getGame()->getPlayer()->getSock().sendBytes(buffer, size+1);
+			name_buffer[0] = size;
+			strncpy(name_buffer + 1, game_name.c_str(), size + 1);
+			menuScreen->getGame()->getPlayer()->getSock().sendBytes(name_buffer, MAX_NAME_LENGHT);
 			menuScreen->state->setNewState(new LobbyMenu(menuScreen));
-			delete[] buffer;
 		}
 		else if (backButton->isClicked()) {
 			menuScreen->getGame()->getPlayer()->getSock().close();

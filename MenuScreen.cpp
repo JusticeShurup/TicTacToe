@@ -8,7 +8,6 @@ using namespace sf;
 
 MenuScreen::MenuScreen(Game* game) {
     setGame(game);
-    setServer(new Server(getGame()->getPlayer()->getSock()));
     state = new MainMenu(this);
 }
 
