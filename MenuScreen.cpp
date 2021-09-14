@@ -4,6 +4,7 @@
 #include "Windows.h"
 #include "MainMenu.h"
 #include <iostream>
+#include "Player.h"
 using namespace sf;
 
 MenuScreen::MenuScreen(Game* game) {

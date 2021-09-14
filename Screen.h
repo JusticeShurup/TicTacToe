@@ -5,6 +5,7 @@
 #include "Server.h"
 
 class Game;
+class Player;
 
 class Screen
 {
@@ -18,8 +19,12 @@ public:
 	void setGame(Game* game);
 	void setServer(Server* server);
 
+	void setScreen(Screen* screen);
+
 	Game* getGame();
 	Server* getServer();
+
+	Player* getPlayer();
 
 	virtual ~Screen() {};
 

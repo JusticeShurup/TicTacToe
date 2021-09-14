@@ -71,17 +71,28 @@ void LobbyMenu::initPlayer2(std::string name) {
 void LobbyMenu::handleEvent(Event& event, RenderWindow* window) {
 	readyButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	exitButton->update(Vector2f(Mouse::getPosition(*window)), event);
-	if (menuScreen->getServer()->isNicknameRecieved() && !player2_nickname) {
-		std::cout << "here" << std::endl;
+	try {
 		initPlayer2(menuScreen->getServer()->getSecondPlayerNickname());
 	}
+	catch(std::logic_error &e){
+	}
 	if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
+		uint8_t ready;
 		if (readyButton->isClicked()) {
-
+			ready = 1;
+			menuScreen->getPlayer()->getSock().sendBytes(&ready, sizeof(uint8_t));
+			menuScreen->getPlayer()->getSock().receiveBytes(&ready, sizeof(uint8_t));
+			uint8_t game_number;
+			menuScreen->getPlayer()->getSock().receiveBytes(&game_number, sizeof(uint8_t));
+			menuScreen->getGame()->getPlayer()->setNumber(game_number);
+			if (ready == 1) {
+				menuScreen->setScreen(new GameScreen(menuScreen->getGame()));
+			}
 		}
 		else if (exitButton->isClicked()) {
-			menuScreen->getGame()->getPlayer()->getSock().close();
-			menuScreen->state = new PlayVSPlayerMenu(menuScreen);
+			ready = 2;
+			menuScreen->getPlayer()->getSock().sendBytes(&ready, sizeof(ready));
+			menuScreen->state->setNewState(new PlayVSPlayerMenu(menuScreen));
 		}
 	}
 }

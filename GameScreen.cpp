@@ -5,7 +5,9 @@
 #include <iostream>
 using namespace sf;
 
-GameScreen::GameScreen(Game* game) {
+GameScreen::GameScreen(Game* game) :
+    buffer{0}
+{
     setGame(game);
     claimTurnImage = new Image;
     claimTurnImage->loadFromFile("images/claimButton.png");
@@ -28,6 +30,7 @@ GameScreen::GameScreen(Game* game) {
             count += 1;
         }
     }
+    for (int i = 0; i < 9; i++) claimed_shapes.push_back(15);
     gameShape_number = 0;
     turn = true;
     vsAI = game->vsAI;
@@ -135,43 +138,48 @@ void GameScreen::simulateAI(int AI_number) {
 void GameScreen::handleEvent(Event &event, RenderWindow* window) {
     int AI_number;
     srand(time(NULL));
-    int player_number = rand() % 2 + 1;
     bool is_running = true;
     if (!vsAI) {
-        turn = player_number;
         while (is_running) {
+            uint8_t turn = 0;
+            game->player->getSock().sendBytes(&turn, sizeof(uint8_t));
+            game->player->getSock().receiveBytes(buffer, 18);
+            for (int i = 0; i < 9; i++) {
+                gameShapes[i].enabled = buffer[i];
+            }
+            for (int i = 9; i < 18; i++) {
+                if (buffer[i - 9] != 0) claimed_shapes[i - 9] = i - 9;
+                gameShapes[i-9].player_number = buffer[i-9];
+            }
             render(window);
-            game->clock.restart();
-            if (player_number == 1) {
-                while (turn) {
-                    while (!claimTurn) {
-                        while (window->pollEvent(event)) {
-                            if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
-                                render(window);
-                                if (claimTurnButton->getGlobalBounds().contains(Vector2f(Mouse::getPosition(*window)))) {
-                                    claimTurn = true;
-                                    claimed_shapes.push_back(gameShape_number);
-                                    turn = true;
-                                }
-                                else {
-                                    undoClick();
-                                    update(game->player, event);
-                                }
-                                if (checkWin(player_number)) {
-                                    std::cout << "Win player 1" << std::endl;
-                                    is_running = false;
-                                }
-                                render(window);
-                            }
-                            render(window);
+            game->player->getSock().receiveBytes(&turn, sizeof(uint8_t));
+            while (!claimTurn) {
+                while (window->pollEvent(event)) {
+                    if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
+                        render(window);
+                        if (claimTurnButton->getGlobalBounds().contains(Vector2f(Mouse::getPosition(*window)))) {
+                            claimTurn = true;
+                            uint8_t shape_number = gameShape_number;
+                            game->player->getSock().sendBytes(&shape_number, sizeof(uint8_t));
                         }
+                        else {
+                            undoClick();
+                            update(game->player, event);
+                        }
+                        if (checkWin(game->getPlayer()->getNumber())) {
+                            std::cout << "Win player 1" << std::endl;
+                            is_running = false;
+                        }
+                        render(window);
                     }
-                    claimTurn = false;
+                    render(window);
                 }
             }
+            claimTurn = false;
         }
         game->screen = new ResultScreen(game);
     }
+    /*
     else {
         if (player_number == 1) {
             AI_number = 2;
@@ -232,6 +240,7 @@ void GameScreen::handleEvent(Event &event, RenderWindow* window) {
     }
     render(window);
     game->screen = new ResultScreen(game);
+    */
 }
 
 void GameScreen::processLogic(float delta_time, RenderWindow* window) {

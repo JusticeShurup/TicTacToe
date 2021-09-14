@@ -11,6 +11,7 @@ public:
 	void setNickname(std::string nickname);
 	std::string getNickame() const;
 	int getNumber();
+	void setNumber(int number);
 	void setConnection(std::string address);
 	Poco::Net::StreamSocket& getSock();
 private:

@@ -21,6 +21,10 @@ int Player::getNumber() {
 	return number;
 }
 
+void Player::setNumber(int number) {
+	this->number = number;
+}
+
 void Player::setConnection(std::string address) {
 	Poco::Net::SocketAddress address_server(address);
 	client.connect(address_server);

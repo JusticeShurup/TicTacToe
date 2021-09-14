@@ -14,6 +14,8 @@ TextField::TextField(int size) :
 	rect.setFillColor(sf::Color::White);
 	rect.setOutlineColor(sf::Color(127, 127, 127));
 	rect.setPosition(this->getPosition());
+
+	textSF.setString("|");
 }
 
 std::string TextField::getText() {
@@ -50,7 +52,7 @@ void TextField::handleInput(Event& event) {
 	else if (text.size() < size) {
 		text += event.text.unicode;
 	}
-	textSF.setString(text);
+	textSF.setString(text + "|");
 }
 
 void TextField::draw(RenderTarget& window, RenderStates states) const {

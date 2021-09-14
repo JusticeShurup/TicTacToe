@@ -32,8 +32,10 @@ private:
     int gameShape_number; // Хранит номер ещё не подтверждённого крестика или нолика 
     std::vector<int> claimed_shapes;
 
+    char buffer[18];
 
     bool claimTurn;
+
     bool turn; // Переменная обозначающая чей ход (false - первый игрок, true - второй игрок)
     bool vsAI; // Играем ли против бота или нет
 };

@@ -17,6 +17,7 @@ public:
     virtual void handleEvent(sf::Event& event, sf::RenderWindow* window) override;
     virtual void processLogic(float delta_time, sf::RenderWindow* window) override;
     virtual void render(sf::RenderWindow* window) override;
+    
 
     MenuState* state;
 private:

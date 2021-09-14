@@ -26,14 +26,14 @@ void FindRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 	uint8_t result;
 	okButton->update(Vector2f(Mouse::getPosition(*window)), event);
 	backButton->update(Vector2f(Mouse::getPosition(*window)), event);
-	if (textField->contains(sf::Vector2f(Mouse::getPosition(*window)))) {
-		textField->setActive(true);
-	}
-	else {
-		textField->setActive(false);
-	}
 	textField->handleInput(event);
 	if (event.type == event.MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
+		if (textField->contains(Vector2f(Mouse::getPosition(*window)))) {
+			textField->setActive(true);
+		}
+		else {
+			textField->setActive(false);
+		}
 		if (okButton->isClicked()) {
 			std::string game_name;
 			game_name = textField->getText();
@@ -43,8 +43,6 @@ void FindRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 			menuScreen->getGame()->getPlayer()->getSock().sendBytes(name_buffer, MAX_NAME_LENGHT);
 			menuScreen->getGame()->getPlayer()->getSock().receiveBytes(&result, sizeof(uint8_t));
 			if (result == 1) {
-				uint8_t message = 1;
-				menuScreen->getGame()->getPlayer()->getSock().sendBytes(&message, sizeof(uint8_t));
 				setNewState(new LobbyMenu(menuScreen));
 			}
 			else {

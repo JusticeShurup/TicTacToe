@@ -15,21 +15,17 @@ Server::Server(Poco::Net::StreamSocket& client) :
 
 void Server::NetEvent() {
 	uint8_t message = 1; 
-	std::string nickname = "";
 	client.sendBytes(&message, sizeof(uint8_t));
 	client.receiveBytes(&message, sizeof(uint8_t));
-	while (nickname.size() <= 0) {
-		client.receiveBytes(&size, sizeof(uint8_t));
-		nickname = std::string(size, ' ');
-		client.receiveBytes(&(nickname[0]), size);
-		player_name = nickname;
-	}
-	if (nickname.size() > 0) flag = true;
+	client.receiveBytes(&size, sizeof(uint8_t));
+	player_name = std::string(size, ' ');
+	client.receiveBytes(&(player_name[0]), size);
+	if (player_name.size() > 0) flag = true;
 }
 
 std::string Server::getSecondPlayerNickname() const{
-	if (flag) return player_name;
-	else throw std::logic_error("nickname is not ready");
+	if (!flag) throw std::logic_error("nickname is not ready");
+	return player_name;
 }
 
 bool Server::isNicknameRecieved() {
