@@ -20,6 +20,7 @@ public:
 
 	void close();
 private:
+	char buffer[18];
 	Poco::Net::StreamSocket client;
 	Poco::RunnableAdapter<Server> adapter;
 	Poco::Thread thread;

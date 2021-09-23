@@ -21,6 +21,9 @@ public:
 
 	void setScreen(Screen* screen);
 
+	void sendNameBytes(char(&buffer)[18]);
+	void receiveNameBytes(char(&buffer)[18]);
+
 	Game* getGame();
 	Server* getServer();
 

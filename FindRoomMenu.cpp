@@ -38,9 +38,11 @@ void FindRoomMenu::handleEvent(Event& event, RenderWindow* window) {
 			std::string game_name;
 			game_name = textField->getText();
 			uint8_t size = game_name.size();
-			name_buffer[0] = size;
-			strncpy(name_buffer + 1, game_name.c_str(), size+1);
-			menuScreen->getGame()->getPlayer()->getSock().sendBytes(name_buffer, MAX_NAME_LENGHT);
+			*((uint8_t*)name_buffer) = size;
+			strcpy(name_buffer + sizeof(uint8_t), game_name.c_str());
+			
+			menuScreen->sendNameBytes(name_buffer);
+
 			menuScreen->getGame()->getPlayer()->getSock().receiveBytes(&result, sizeof(uint8_t));
 			if (result == 1) {
 				setNewState(new LobbyMenu(menuScreen));

@@ -10,6 +10,7 @@ class SettingsMenu
 {
 public:
 	SettingsMenu(MenuScreen* menuScreen);
+	~SettingsMenu();
 
 	virtual void handleEvent(sf::Event& event, sf::RenderWindow* window) override;
 	virtual void render(sf::RenderWindow* window) override;
@@ -17,7 +18,7 @@ public:
 private:
 	TextField* textField;
 
-	Button* buttonOk;
-	Button* buttonExit;
+	Button* okButton;
+	Button* backButton;
 };
 #endif

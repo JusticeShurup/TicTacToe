@@ -1,9 +1,18 @@
 #include "Player.h"
 #include "Poco/Net/SocketAddress.h"
+#include <fstream>
+
 Player::Player(int number) : 
 	number(number), 
 	nickname("Player")
-{}
+{
+	std::ifstream s("player_name.txt");
+	char buff[18];
+	if (s) {
+		s.getline(buff, 18);
+		nickname = buff;
+	}
+}
 
 Player::~Player() {
 	client.close();

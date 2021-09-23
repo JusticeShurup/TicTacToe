@@ -9,9 +9,11 @@
 
 using namespace sf;
 
-LobbyMenu::LobbyMenu(MenuScreen* menuScreen) {
+LobbyMenu::LobbyMenu(MenuScreen* menuScreen) :
+	buffer{0}
+{
 	setMenuScreen(menuScreen);
-
+	menuScreen->setServer(new Server(menuScreen->getPlayer()->getSock()));
 	font.loadFromFile("Inconsolata_Condensed-Bold.ttf");
 	readyButton = new Button(150, 100, 395, 345, "Ready");
 	exitButton = new Button(150, 100, 5, 345, "Exit");
@@ -34,7 +36,6 @@ LobbyMenu::LobbyMenu(MenuScreen* menuScreen) {
 
 
 	player2_nickname = nullptr;
-
 	menuScreen->getServer()->run();
 
 }
@@ -48,12 +49,12 @@ LobbyMenu::~LobbyMenu() {
 }
 
 std::string LobbyMenu::receiveGameName() {
-	uint8_t size;
-	menuScreen->getGame()->getPlayer()->getSock().receiveBytes(&size, sizeof(uint8_t));
-	std::string game_name(size, ' ');
-	menuScreen->getGame()->getPlayer()->getSock().receiveBytes(&(game_name[0]), size);
+	Poco::Net::StreamSocket sock = menuScreen->getGame()->getPlayer()->getSock();
+	menuScreen->receiveNameBytes(buffer);
+
+	std::string game_name(buffer + 1);
 	uint8_t result = 1;
-	menuScreen->getGame()->getPlayer()->getSock().sendBytes(&result, sizeof(uint8_t));
+	sock.sendBytes(&result, sizeof(uint8_t));
 	return game_name;
 }
 
@@ -81,11 +82,13 @@ void LobbyMenu::handleEvent(Event& event, RenderWindow* window) {
 		if (readyButton->isClicked()) {
 			ready = 1;
 			menuScreen->getPlayer()->getSock().sendBytes(&ready, sizeof(uint8_t));
+			ready = 0;
 			menuScreen->getPlayer()->getSock().receiveBytes(&ready, sizeof(uint8_t));
 			uint8_t game_number;
-			menuScreen->getPlayer()->getSock().receiveBytes(&game_number, sizeof(uint8_t));
-			menuScreen->getGame()->getPlayer()->setNumber(game_number);
 			if (ready == 1) {
+				menuScreen->getPlayer()->getSock().receiveBytes(&game_number, sizeof(uint8_t));
+				menuScreen->getGame()->getPlayer()->setNumber(game_number);
+				std::cout << menuScreen->getGame()->getPlayer()->getNumber();
 				menuScreen->setScreen(new GameScreen(menuScreen->getGame()));
 			}
 		}

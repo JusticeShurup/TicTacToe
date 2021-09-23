@@ -10,17 +10,23 @@ Server::Server(Poco::Net::StreamSocket& client) :
 	client(client),
 	size(0),
 	flag(false),
-	adapter(*this, &Server::NetEvent)
+	adapter(*this, &Server::NetEvent), 
+	buffer{0}
 {}
 
 void Server::NetEvent() {
 	uint8_t message = 1; 
-	client.sendBytes(&message, sizeof(uint8_t));
-	client.receiveBytes(&message, sizeof(uint8_t));
-	client.receiveBytes(&size, sizeof(uint8_t));
-	player_name = std::string(size, ' ');
-	client.receiveBytes(&(player_name[0]), size);
-	if (player_name.size() > 0) flag = true;
+	int total_received = 0;
+	while (total_received < 18) {
+		int actually_received = client.receiveBytes(
+			buffer + total_received,
+			18 - total_received
+		);
+
+		total_received += actually_received;
+	}
+	player_name = std::string(buffer + 1);
+	flag = player_name.size() > 0;
 }
 
 std::string Server::getSecondPlayerNickname() const{

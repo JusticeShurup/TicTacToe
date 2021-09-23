@@ -5,7 +5,7 @@
 class CreateRoomMenu :
     public MenuState
 {
-    static const int MAX_NAME_LENGHT = 128;
+    static const int MAX_NAME_LENGHT = 18;
 public: 
     CreateRoomMenu(MenuScreen* menuScreen);
     ~CreateRoomMenu();

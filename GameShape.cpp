@@ -13,8 +13,8 @@ GameShape::GameShape(float sX, float eX, float sY, float eY)
 	player_number = 0;
 }
 
-void GameShape::setPlayerShape(Player* player) {
-	player_number = player->getNumber();
+void GameShape::setPlayerShape(int player_number) {
+	this->player_number = player_number;
 	if (player_number == 1) {
 
 		rectangle1 = new RectangleShape(Vector2f(180, 10));

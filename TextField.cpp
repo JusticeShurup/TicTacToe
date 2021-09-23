@@ -1,5 +1,6 @@
 #include "TextField.h"
 #include <SFML/System.hpp>
+
 using namespace sf;
 TextField::TextField(int size) : 
 	size(size),
@@ -49,7 +50,7 @@ void TextField::handleInput(Event& event) {
 	if (event.text.unicode == 8) {   // Delete key
 		text = text.substr(0, text.size() - 1);
 	}
-	else if (text.size() < size) {
+	else if (text.size() < size && !sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 		text += event.text.unicode;
 	}
 	textSF.setString(text + "|");

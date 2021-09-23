@@ -16,7 +16,7 @@ public:
 
 private:
 
-	char buffer[20];
+	char buffer[18];
 	Button* readyButton;
 	Button* exitButton;
 

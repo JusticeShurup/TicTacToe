@@ -5,7 +5,7 @@
 class FindRoomMenu :
     public MenuState
 {
-    static const int MAX_NAME_LENGHT = 128;
+    static const int MAX_NAME_LENGHT = 18;
 public: 
     FindRoomMenu(MenuScreen* menuScreen);
     ~FindRoomMenu();

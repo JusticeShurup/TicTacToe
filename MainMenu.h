@@ -14,6 +14,7 @@ public:
     virtual void render(sf::RenderWindow* window) override;
 private:
     Button* playButton;
+    Button* settingsButton;
 
     Button* exitButton;
 };

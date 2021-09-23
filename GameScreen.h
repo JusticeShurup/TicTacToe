@@ -9,10 +9,10 @@ public:
     
     GameScreen(Game* game);
 
-    void update(Player* player, sf::Event& event);
+    void update(int player_number, sf::Event& event);
 
-    bool checkWin(int player);
-    void setClick(float X, float Y, Player* player);
+    bool checkWin(int player_number);
+    void setClick(float X, float Y, int player_number);
 
     void undoClick();
 
@@ -30,13 +30,13 @@ private:
     std::vector<GameShape> gameShapes;
         
     int gameShape_number; // Хранит номер ещё не подтверждённого крестика или нолика 
-    std::vector<int> claimed_shapes;
+    int claimed_shapes[9];
 
-    char buffer[18];
+    char buffer[9];
 
     bool claimTurn;
 
-    bool turn; // Переменная обозначающая чей ход (false - первый игрок, true - второй игрок)
+    uint8_t turn; // Переменная обозначающая чей ход (false - первый игрок, true - второй игрок)
     bool vsAI; // Играем ли против бота или нет
 };
 #endif

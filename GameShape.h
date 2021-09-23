@@ -7,7 +7,7 @@ class GameShape
 {
 public:
 	GameShape(float sX, float eX, float sY, float eY);
-	void setPlayerShape(Player* player);
+	void setPlayerShape(int player_number);
 	void drawPlayerShape(sf::RenderWindow* window);
 	void clearShape();
 
